@@ -3,35 +3,13 @@ library(dplyr)
 library(ggplot2); theme_set(theme_bw(base_family="Times", base_size = 13))
 library(rstan)
 library(egg)
+source("../script/script_incidence.R")
 load("../stanfit_sirs/stanfit_sirs_us_npi.rda")
 load("../data/data_processed_mobility_us.rda")
 
-data <- read.csv("../data/Trend Mycoplasma pneumoniae Detection Rates 2024-06-30.csv")
-
-ii <- "US"
-
-data_gather <- data %>%
-	mutate(
-		date=as.Date(Week)
-	) %>%
-	select(-Week) %>%
-	gather(key, value, -date) %>%
-	mutate(
-		key=factor(key, levels=c("US", "Northeast", "Midwest", "West", "South")),
-		year=epiyear(date),
-		week=epiweek(date),
-		week=ifelse(week==53, 52, week)
-	) %>%
-	group_by(key, year, week) %>%
-	summarize(
-		value=mean(value)
-	) %>%
-	filter(key==ii) %>%
-	head(-1)
-
 ss <- summary(stanfit_sirs_us_npi)
 
-N <- nrow(data_gather)
+N <- nrow(data_myco_gather)
 Npred <- 52*10
 
 fitdata <- data.frame(
@@ -57,7 +35,7 @@ Sdata <- data.frame(
 fitdata %>%
 	filter(est==max(est))
 
-g1 <- ggplot(data_gather) +
+g1 <- ggplot(data_myco_gather) +
 	geom_vline(xintercept=2015:2034, lty=3) +
 	geom_point(aes(year+week/52, value*100), shape=1) +
 	geom_line(data=fitdata, aes(year+week/52, est*100), col="#E02938") +
@@ -75,7 +53,7 @@ fitdata$est[which.max(fitdata$est)]
 fitdata$lwr[which.max(fitdata$est)]
 fitdata$upr[which.max(fitdata$est)]
 
-max(data_gather$value)
+max(data_myco_gather$value)
 
 g2 <- ggplot(Sdata) +
 	geom_vline(xintercept=2015:2034, lty=3) +

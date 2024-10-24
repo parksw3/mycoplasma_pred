@@ -4,39 +4,18 @@ library(lubridate)
 library(ggplot2); theme_set(theme_bw(base_family="Times", base_size = 13))
 library(rstan)
 library(egg)
+source("../script/script_incidence.R")
+
 load("../stanfit_sirs/stanfit_sirs_us_npi.rda")
 load("../data/data_processed_mobility_us.rda")
 
-data <- read.csv("../data/Trend Mycoplasma pneumoniae Detection Rates 2024-06-30.csv")
-
-ii <- "US"
-
-data_gather <- data %>%
-	mutate(
-		date=as.Date(Week)
-	) %>%
-	select(-Week) %>%
-	gather(key, value, -date) %>%
-	mutate(
-		key=factor(key, levels=c("US", "Northeast", "Midwest", "West", "South")),
-		year=epiyear(date),
-		week=epiweek(date),
-		week=ifelse(week==53, 52, week)
-	) %>%
-	group_by(key, year, week) %>%
-	summarize(
-		value=mean(value)
-	) %>%
-	filter(key==ii) %>%
-	head(-1)
-
 ss <- summary(stanfit_sirs_us_npi)
 
-N <- nrow(data_gather)
+N <- nrow(data_myco_gather)
 
 fitdata <- data.frame(
-	year=data_gather$year,
-	week=data_gather$week,
+	year=data_myco_gather$year,
+	week=data_myco_gather$week,
 	est=ss$summary[grepl("Ifit\\[", rownames(ss$summary)),6][1:N],
 	lwr=ss$summary[grepl("Ifit\\[", rownames(ss$summary)),4][1:N],
 	upr=ss$summary[grepl("Ifit\\[", rownames(ss$summary)),8][1:N],
@@ -45,8 +24,8 @@ fitdata <- data.frame(
 )
 
 npidata <- data.frame(
-	year=data_gather$year,
-	week=data_gather$week,
+	year=data_myco_gather$year,
+	week=data_myco_gather$week,
 	est=ss$summary[grepl("npieff\\[", rownames(ss$summary)),6][1:N],
 	lwr=ss$summary[grepl("npieff\\[", rownames(ss$summary)),4][1:N],
 	upr=ss$summary[grepl("npieff\\[", rownames(ss$summary)),8][1:N],
@@ -63,7 +42,7 @@ betadata <- data.frame(
 	upr2=ss$summary[grepl("beta\\[", rownames(ss$summary)),7]
 )
 
-g1 <- ggplot(data_gather) +
+g1 <- ggplot(data_myco_gather) +
 	geom_vline(xintercept=2015:2024, lty=3) +
 	geom_point(aes(year+week/52, value*100), shape=1) +
 	geom_line(data=fitdata, aes(year+week/52, est*100), col="#E02938") +

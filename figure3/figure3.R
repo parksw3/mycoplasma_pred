@@ -5,36 +5,14 @@ library(ggplot2); theme_set(theme_bw(base_family="Times", base_size=16))
 library(rstan)
 library(egg)
 source("../R/simulate_sirs.R")
+source("../script/script_incidence.R")
 load("../stanfit_sirs/stanfit_sirs_us_npi.rda")
-
-data <- read.csv("../data/Trend Mycoplasma pneumoniae Detection Rates 2024-06-30.csv")
-
-ii <- "US"
-
-data_gather <- data %>%
-	mutate(
-		date=as.Date(Week)
-	) %>%
-	select(-Week) %>%
-	gather(key, value, -date) %>%
-	mutate(
-		key=factor(key, levels=c("US", "Northeast", "Midwest", "West", "South")),
-		year=epiyear(date),
-		week=epiweek(date),
-		week=ifelse(week==53, 52, week)
-	) %>%
-	group_by(key, year, week) %>%
-	summarize(
-		value=mean(value)
-	) %>%
-	filter(key==ii) %>%
-	head(-1)
 
 ss <- summary(stanfit_sirs_us_npi)
 
 npieff <- ss$summary[grepl("npieff\\[", rownames(ss$summary)),6]
 
-N <- nrow(data_gather)
+N <- nrow(data_myco_gather)
 Npred <- length(npieff)-N
 week <- c(52, rep(1:52, 300)[1:(N+Npred-1)]) 
 

@@ -4,32 +4,10 @@ library(dplyr)
 library(ggplot2); theme_set(theme_bw(base_family="Times"))
 library(rstan)
 library(egg)
+source("../script/script_incidence.R")
 load("../stanfit_sirs/stanfit_sirs_us_npi.rda")
 load("../stanfit_sir/stanfit_sir_us_npi.rda")
 load("../data/data_processed_mobility_us.rda")
-
-data <- read.csv("../data/Trend Mycoplasma pneumoniae Detection Rates 2024-06-30.csv")
-
-ii <- "US"
-
-data_gather <- data %>%
-	mutate(
-		date=as.Date(Week)
-	) %>%
-	select(-Week) %>%
-	gather(key, value, -date) %>%
-	mutate(
-		key=factor(key, levels=c("US", "Northeast", "Midwest", "West", "South")),
-		year=epiyear(date),
-		week=epiweek(date),
-		week=ifelse(week==53, 52, week)
-	) %>%
-	group_by(key, year, week) %>%
-	summarize(
-		value=mean(value)
-	) %>%
-	filter(key==ii) %>%
-	head(-1)
 
 ss_sirs <- summary(stanfit_sirs_us_npi)
 ss_sir <- summary(stanfit_sir_us_npi)
@@ -38,7 +16,7 @@ ss_sirs$summary[rownames(ss_sirs$summary)=="tau",]
 # 500.604628 = 9.62
 # 227.327234--851.156062 (4.371678--16.36839)
 
-N <- nrow(data_gather)
+N <- nrow(data_myco_gather)
 Npred <- 52*10
 
 fitdata_sirs <- data.frame(
@@ -99,7 +77,7 @@ betadata_sir <- data.frame(
 	upr2=ss_sir$summary[grepl("beta\\[", rownames(ss_sir$summary)),7]
 )
 
-g1 <- ggplot(data_gather) +
+g1 <- ggplot(data_myco_gather) +
 	geom_vline(xintercept=2015:2034, lty=3) +
 	geom_point(aes(year+week/52, value*100), shape=1) +
 	geom_line(data=fitdata_sir, aes(year+week/52, est*100), col="darkblue") +
