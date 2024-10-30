@@ -9,11 +9,12 @@ simulate_sirs <- function(beta,
                           S0,
                           I0,
                           tmax=572) {
-  Svec <- Ivec <- Rvec <- rep(0, tmax)
+  Svec <- Ivec <- Rvec <- Cvec <- rep(0, tmax)
   
   Svec[1] <- S0 * pop
   Ivec[1] <- I0 * pop
   Rvec[1] <- (1 - S0 - I0) * pop
+  Cvec[1] <- 0
   
   for (i in 2:tmax) {
     foi <- beta[[week[i]]] * (Ivec[i-1])/pop * npieff[i]
@@ -28,13 +29,15 @@ simulate_sirs <- function(beta,
     Svec[i] <- Svec[i-1] - Sout + mu * pop + RtoS
     Ivec[i] <- Ivec[i-1] + StoI - Iout
     Rvec[i] <- Rvec[i-1] + ItoR - Rout
+    Cvec[i] <- StoI*rho
   }
   
   data.frame(
     S=Svec,
     I=Ivec,
     R=Rvec,
-    Ifit=Ivec*rho
+    Ifit=Ivec*rho,
+    C=Cvec
   )
 }
 

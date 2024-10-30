@@ -6,13 +6,13 @@ library(rstan)
 library(egg)
 source("../R/simulate_sirs.R")
 source("../script/script_incidence.R")
-load("../stanfit_sirs/stanfit_sirs_us_npi.rda")
+load("../stanfit_sirs/stanfit_sirs_us_incidence_npi.rda")
 
-ss <- summary(stanfit_sirs_us_npi)
+ss <- summary(stanfit_sirs_us_incidence_npi)
 
 npieff <- ss$summary[grepl("npieff\\[", rownames(ss$summary)),6]
 
-N <- nrow(data_myco_gather)
+N <- nrow(data_incidence)
 Npred <- length(npieff)-N
 week <- c(52, rep(1:52, 300)[1:(N+Npred-1)]) 
 
@@ -38,7 +38,7 @@ for (i in 1:length(scalevec)) {
 											gamma=1/3,
 											rho=ss$summary[grepl("rho", rownames(ss$summary)),6],
 											npieff=npi1$npieff,
-											pop=1,
+											pop=1e6,
 											S0=ss$summary[grepl("S0", rownames(ss$summary)),6],
 											I0=ss$summary[grepl("I0", rownames(ss$summary)),6],
 											tmax=nrow(npi1)) %>%
@@ -77,7 +77,7 @@ for (i in 1:length(durvec)) {
 											delta=ss$summary[grepl("delta", rownames(ss$summary)),6],
 											rho=ss$summary[grepl("rho", rownames(ss$summary)),6],
 											npieff=npi1$npieff,
-											pop=1,
+											pop=1e6,
 											S0=ss$summary[grepl("S0", rownames(ss$summary)),6],
 											I0=ss$summary[grepl("I0", rownames(ss$summary)),6],
 											tmax=nrow(npi1)) %>%
@@ -114,7 +114,7 @@ for (i in 1:length(immunevec)) {
 											 delta=1/immune/52,
 											 rho=ss$summary[grepl("rho", rownames(ss$summary)),6],
 											 npieff=npi1$npieff,
-											 pop=1,
+											 pop=1e6,
 											 S0=ss$summary[grepl("S0", rownames(ss$summary)),6],
 											 I0=ss$summary[grepl("I0", rownames(ss$summary)),6],
 											 tmax=nrow(npi1)) %>%
@@ -149,11 +149,11 @@ g1 <- ggplot(scaledata) +
 
 g2 <- ggplot(scaledata) +
 	geom_vline(xintercept=2015:2025, lty=3) +
-	geom_line(aes(year+week/52, Ifit, col=as.factor(scale)), lwd=0.8) +
+	geom_line(aes(year+week/52, C, col=as.factor(scale)), lwd=0.8) +
 	scale_x_continuous("Year", expand=c(0, 0),
 										 limits=c(2019.5, 2025.5),
 										 breaks=2015:2024) +
-	scale_y_continuous("Test positivity (%)", expand=c(0, 0), limits=c(0, 0.11)) +
+	scale_y_continuous("Incidence proxy", expand=c(0, 0), limits=c(0, 30)) +
 	scale_color_manual("Relative strength of NPIs", values=c("#000000", "#E69F00", "#56B4E9", "#009E73", "#CC79A7")) +
 	guides(color=guide_legend(nrow=2, title.position="top")) +
 	theme(
@@ -181,11 +181,11 @@ g3 <- ggplot(durdata) +
 
 g4 <- ggplot(durdata) +
 	geom_vline(xintercept=2015:2025, lty=3) +
-	geom_line(aes(year+week/52, Ifit, col=as.factor(dur)), lwd=0.8) +
+	geom_line(aes(year+week/52, C, col=as.factor(dur)), lwd=0.8) +
 	scale_x_continuous("Year", expand=c(0, 0),
 										 limits=c(2019.5, 2025.5),
 										 breaks=2015:2024) +
-	scale_y_continuous("Test positivity (%)", expand=c(0, 0), limits=c(0, 0.11)) +
+	scale_y_continuous("Incidence proxy", expand=c(0, 0), limits=c(0, 30)) +
 	scale_color_manual("Duration of NPIs", values=c("#000000", "#E69F00", "#56B4E9", "#009E73", "#CC79A7")) +
 	guides(color=guide_legend(nrow=2, title.position="top")) +
 	theme(
@@ -202,11 +202,11 @@ g5 <- ggplot() +
  
 g6 <- ggplot(immunedata) +
 	geom_vline(xintercept=2015:2025, lty=3) +
-	geom_line(aes(year+week/52, Ifit, col=as.factor(immune)), lwd=0.8) +
+	geom_line(aes(year+week/52, C, col=as.factor(immune)), lwd=0.8) +
 	scale_x_continuous("Year", expand=c(0, 0),
 										 limits=c(2019.5, 2025.5),
 										 breaks=2015:2024) +
-	scale_y_continuous("Test positivity (%)", expand=c(0, 0), limits=c(0, 0.11)) +
+	scale_y_continuous("Incidence proxy", expand=c(0, 0), limits=c(0, 30)) +
 	scale_color_manual("Duration of immunity\n(years)", values=c("#000000", "#E69F00", "#56B4E9", "#009E73", "#CC79A7")) +
 	guides(color=guide_legend(nrow=2, title.position="top")) +
 	theme(
@@ -219,4 +219,4 @@ g6 <- ggplot(immunedata) +
 gcomb <- ggarrange(g1, g3, g5, g2, g4, g6, heights = c(1, 1.5),
 									 labels=c("A", "C", "", "B", "D", "E"))
 
-ggsave("figure3.pdf", gcomb, width=12, height=8)
+ggsave("figure3_new.pdf", gcomb, width=12, height=8)

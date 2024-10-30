@@ -41,4 +41,5 @@ data_myco_gather <- data_myco_raw %>%
 data_incidence <- merge(data_ili_new, data_myco_gather) %>%
 	mutate(
 		proxy=value*ili
-	)
+	) %>%
+	arrange(year, week)
