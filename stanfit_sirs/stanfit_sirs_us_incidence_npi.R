@@ -21,7 +21,7 @@ standata <- list(
   week=c(52, rep(1:52, 30)[1:(N+Npred-1)]),
   incidence=data_incidence$proxy,
   mu=1/80/52,
-  pop=1e6,
+  pop=1e3,
   gamma=1/3
 )
 
@@ -45,8 +45,8 @@ save("stanfit_sirs_us_incidence_npi", file="stanfit_sirs_us_incidence_npi.rda")
 
 ss <- summary(stanfit_sirs_us_incidence_npi)
 
-max(ss$summary[which(!is.na(ss$summary[,10])),10]) ## 1.007
-min(ss$summary[which(!is.na(ss$summary[,10])),9]) ## 529.6
+max(ss$summary[which(!is.na(ss$summary[,10])),10]) ## 1.003
+min(ss$summary[which(!is.na(ss$summary[,10])),9]) ## 536.4479
 
 plot(1:(N+Npred)/52, ss$summary[grepl("C\\[", rownames(ss$summary)),6], col=2)
 
@@ -68,6 +68,6 @@ plot(ss$summary[grepl("npieff\\[", rownames(ss$summary)),6], type="l", ylim=c(0,
 lines(ss$summary[grepl("npieff\\[", rownames(ss$summary)),4])
 lines(ss$summary[grepl("npieff\\[", rownames(ss$summary)),8])
 
-plot(ss$summary[grepl("S\\[", rownames(ss$summary)),6]/1e6, ylim=c(0, 1))
-lines(ss$summary[grepl("S\\[", rownames(ss$summary)),4]/1e6)
-lines(ss$summary[grepl("S\\[", rownames(ss$summary)),8]/1e6)
+plot(ss$summary[grepl("S\\[", rownames(ss$summary)),6]/1e3, ylim=c(0, 1))
+lines(ss$summary[grepl("S\\[", rownames(ss$summary)),4]/1e3)
+lines(ss$summary[grepl("S\\[", rownames(ss$summary)),8]/1e3)

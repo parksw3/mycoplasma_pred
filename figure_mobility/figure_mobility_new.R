@@ -54,6 +54,7 @@ cor.test(filter(npidata, year+week/52 >= 2020+8/52, year+week/52 <= 2022+41/52)$
 npi_ccf <- ccf(filter(npidata, year+week/52 >= 2020+8/52, year+week/52 <= 2022+41/52)$est, data_mob$mean)
 
 npi_ccf$acf[npi_ccf$lag==3]<npi_ccf$acf[npi_ccf$lag==4]
+npi_ccf$acf[npi_ccf$lag==4]<npi_ccf$acf[npi_ccf$lag==5]
 
 npidata_filter <- npidata %>%
 	filter(year+week/52 >= 2020+12/52, year+week/52 <= 2022+45/52)
