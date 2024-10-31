@@ -75,9 +75,9 @@ model {
   npi ~ normal(1, 0.2);
   
   S0 ~ uniform(0, 1);
-  I0 ~ normal(0, 0.001);
+  I0 ~ normal(0, 0.01);
   rho ~ normal(0, 2);
-  tau ~ normal(300, 100);
+  tau ~ normal(400, 200);
   sigma ~ normal(0, 0.2);
   sigma_obs ~ normal(0, 0.5);
   

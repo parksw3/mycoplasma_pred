@@ -170,7 +170,8 @@ Second, the duration of NPIs were modified by assuming $\delta = 1$ after the en
 \end{equation}
 We varied $\tsub{t}{end}$ between 2020--2024.
 We note that we evaluate the effects of strength and duration of NPIs independently and do not explore their joint effects.
-Finally, we varied the duration of immunity $1/\nu$ between 3--12 years to assess how waning immunity contributes to the timing of Mp outbreak resurgence.
+Finally, we varied the duration of immunity $1/\nu$ between 3--15 years to assess how waning immunity contributes to the timing of Mp outbreak resurgence.
+For illustration purposes, all parameters are set to median values from the posterior throughout the analysis, except for the duration of immunity, which we allowed to vary in the final analysis.
 
 \section{Results}
 
@@ -191,28 +192,30 @@ The model reproduced the observed epidemic dynamics for Mp infections, including
 To capture the response of Mp to the pandemic, the model required a strong reduction in transmission ($\delta(t) < 1$) in 2020 (Figure 1B).
 The model further estimated sustained reduction in transmission for 2021--2023 (Figure 1C).
 % We note that an increase in transmission predicted in Figure 1B must be interpreted with care as it also reflects the influx of imported infections from other countries (rather than increased transmission).
-While we did not find a statistical correlation between the estimated changes in transmission and mean changes in Google mobility measures ($r=0.13$; 95\% CI: -0.03, 0.30),
+While we did not find a statistical correlation between the estimated changes in transmission and mean changes in Google mobility measures ($r=0.12$; 95\% CI: -0.04, 0.28),
 the strength of correlation increased with lags, with strongest correlation occurring at a 4-week lag  ($r=0.36$; 95\% CI: 0.21--0.50; Supplementary Figure S2).
-The model demonstrated typical sinusoidal patterns in seasonal transmission, peaking around week 23 (Figure 1C).
-The model also estimated the mean duration of immunity to be 9.3 years (95\% CI: 4.4 years--16.4 years).
-The SIR model gave nearly identical estimates for the NPI effects but underestimated the peak of the 2015 outbreak, providing support for the SIRS model (Supplementary Figure S2).
+The model demonstrated typical sinusoidal patterns in seasonal transmission, peaking around week 43 (Figure 1C).
+The model also estimated the mean duration of immunity to be 10.0 years (95\% CI: 8.6 years--11.2 years).
+Comparisons between posterior and prior distributions are presented in Supplementary Figure S3.
+
+% The SIR model gave nearly identical estimates for the NPI effects but underestimated the peak of the 2015 outbreak, providing support for the SIRS model (Supplementary Figure S2).
 
 \textbf{Prediction of future Mp outbreaks.}
 In line with other acute, partially immunizing respiratory pathogens \citep{baker2020impact}, the model predicted a large build-up of the susceptible pool during the NPI period (Figure 2A).
-This build up of susceptible individuals could lead to a large Mp outbreak, which appears to have begun (Figure 1A);
-the model forecasted that the epidemic would peak around the second half of 2024 and start to decline towards the end of 2024 (Figure 2B).
-% Specifically, the model predicted a bimodal peak, with the first peak happening around November 2024.
-The estimated peak positivity will be 7.5\% (95\% CI: 5.6--9.3\%), which is 2--3 times larger than the observed peak positivity of 2.8\% at the end of 2015.
+This build up of susceptible individuals could lead to a large Mp outbreak, which appears to have begun since the beginning of 2024 (Figure 1A);
+the model forecasted that the epidemic would peak around the second half of 2024 and start to decline towards the end of 2024 (Figure 2B), reflecting decrease in transmission rate in winter (Figure 1C).
+The peak incidence during this outbreak is estimated to be 4.3 (95\% CI: 3.5--5.2) times larger than previous peaks.
+% The estimated peak incidence proxy is 2--3 times larger than the observed peak incidence proxy at the end of 2020.
 The model further predicted that the outbreak beginning in 2024 would cause a large depletion of the susceptible pool (Figure 2A), which would lead to another delayed outbreak after several years (Figure 2B).
-% The SEIR model predicted a larger outbreak that spans over a few more years with a peak occurring at 2025; this prediction further translated to an even longer delay in future outbreaks (Supplementary Figure S3).
 
 \begin{figure}[!th]
-\includegraphics[width=\textwidth]{../figure2/figure2.pdf}
+\includegraphics[width=\textwidth]{../figure2/figure2_new.pdf}
 \caption{
 \textbf{Predictions of future Mycoplasma pneumoniae outbreaks.}
 (A) Predicted changes in the proportion of susceptible individuals.
-(B) Predicted changes in weekly test positivity for Mp infections.
+(B) Predicted changes in weekly incidence proxy for Mp infections.
 Red lines and shaded regions represent the estimated posterior median and corresponding 95\% and 50\% credible intervals.
+Points represent the observed incidence proxy.
 }
 \end{figure}
 
@@ -226,7 +229,7 @@ Finally, we found that the duration of immunity was also a key factor in determi
 Faster waning of immunity would have caused a faster build up of the susceptible pool, leading to an earlier Mp outbreak.
 
 \begin{figure}[!th]
-\includegraphics[width=\textwidth]{../figure3/figure3.pdf}
+\includegraphics[width=\textwidth]{../figure3/figure3_new.pdf}
 \caption{
 \textbf{Impact of strength and duration of NPIs on the timing of Mp outbreak resurgence.}
 (A, C) Assumed values for the relative transmission term $\delta$ following the introduction of NPIs by varying the strength (A) and duration (C) of NPIs.
@@ -287,7 +290,8 @@ K.M. receives funding as Principal Investigator of the NIAID Vaccine Research Ce
 
 \section*{Conflict of interest}
 
-B.N. and S.J. are employees of bioMérieux. bioMérieux markets the BIOFIRE System and Syndromic Trends. BIOFIRE and FilmArray are registered trademarks of BIOFIRE Diagnostics LLC in the United States and/or other countries.
+B.N. and S.L. are employees of bioMérieux. bioMérieux markets the BIOFIRE System and Syndromic Trends. 
+BIOFIRE and FilmArray are registered trademarks of BIOFIRE Diagnostics LLC in the United States and/or other countries.
 L.A's institution has received grant funding from Pfizer Inc. for an unrelated study.
 S.D. receives grant support from BIOFIRE Diagnostics, DelveBio, and Karius; he is also a consultant for BIOFIRE Diagnostics, DelveBio, and Karius.
 
@@ -396,6 +400,20 @@ Convergence was assessed based on the lack of warning signs from rstan, indicati
 Mean mobility was calculated by taking the average mobility across four categories: retail \& recreation, grocery \& pharmacy, transit stations, and workplaces \citep{park2024predicting}.
 }
 \end{figure}
+
+
+\pagebreak
+
+\begin{figure}[!ht]
+\includegraphics[width=\textwidth]{../figure1/figure1_posterior.pdf}
+\caption{
+\textbf{Comparisons between posterior and prior distributions.}
+Black lines represent prior distributions.
+Red lines represent posterior distributions.
+Posterior distributions for the seasonal transmission rate and NPI effects are presented in Figure 1.
+}
+\end{figure}
+
 
 \pagebreak
 

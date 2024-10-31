@@ -9,6 +9,16 @@ load("../data/data_processed_mobility_us.rda")
 
 ss <- summary(stanfit_sirs_us_incidence_npi)
 
+dd <- posterior::as_draws_matrix(stanfit_sirs_us_incidence_npi)
+
+dd_C <- dd[,grepl("C\\[", colnames(dd))]
+
+max_range <- apply(dd_C, 1, function(x) {
+	max(x[1:(52*11)])/max(x[1:(52*6)])
+})
+
+quantile(max_range, c(0.025, 0.5, 0.975))
+
 N <- nrow(data_incidence)
 Npred <- 52*10
 
@@ -49,9 +59,9 @@ g1 <- ggplot(data_incidence) +
 		panel.border = element_rect(linewidth=1)
 	)
 
-fitdata$est[which.max(fitdata$est)]/max(data_incidence$proxy)
-fitdata$lwr[which.max(fitdata$est)]/max(data_incidence$proxy)
-fitdata$upr[which.max(fitdata$est)]/max(data_incidence$proxy)
+fitdata$est[which.max(fitdata$est)]/max(fitdata$est[1:(52*6)])
+fitdata$lwr[which.max(fitdata$est)]/max(fitdata$lwr[1:(52*6)])
+fitdata$upr[which.max(fitdata$est)]/max(fitdata$upr[1:(52*6)])
 
 max(data_incidence$proxy)
 

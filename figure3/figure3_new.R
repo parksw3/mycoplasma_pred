@@ -38,7 +38,7 @@ for (i in 1:length(scalevec)) {
 											gamma=1/3,
 											rho=ss$summary[grepl("rho", rownames(ss$summary)),6],
 											npieff=npi1$npieff,
-											pop=1e6,
+											pop=1e3,
 											S0=ss$summary[grepl("S0", rownames(ss$summary)),6],
 											I0=ss$summary[grepl("I0", rownames(ss$summary)),6],
 											tmax=nrow(npi1)) %>%
@@ -77,7 +77,7 @@ for (i in 1:length(durvec)) {
 											delta=ss$summary[grepl("delta", rownames(ss$summary)),6],
 											rho=ss$summary[grepl("rho", rownames(ss$summary)),6],
 											npieff=npi1$npieff,
-											pop=1e6,
+											pop=1e3,
 											S0=ss$summary[grepl("S0", rownames(ss$summary)),6],
 											I0=ss$summary[grepl("I0", rownames(ss$summary)),6],
 											tmax=nrow(npi1)) %>%
@@ -114,7 +114,7 @@ for (i in 1:length(immunevec)) {
 											 delta=1/immune/52,
 											 rho=ss$summary[grepl("rho", rownames(ss$summary)),6],
 											 npieff=npi1$npieff,
-											 pop=1e6,
+											 pop=1e3,
 											 S0=ss$summary[grepl("S0", rownames(ss$summary)),6],
 											 I0=ss$summary[grepl("I0", rownames(ss$summary)),6],
 											 tmax=nrow(npi1)) %>%
