@@ -8,7 +8,6 @@
 *.key
 *.Rproj
 *.docx
-*.pdf
 *.csv
 *.gz
 *.bbl
