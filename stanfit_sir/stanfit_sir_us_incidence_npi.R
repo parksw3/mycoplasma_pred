@@ -4,7 +4,7 @@ library(lubridate)
 library(rstan)
 source("../script/script_incidence.R")
 
-model <- stan_model("../stanmodel/sirs_npi_incidence.stan")
+model <- stan_model("../stanmodel/sir_npi_incidence.stan")
 
 N <- nrow(data_incidence)
 Npred <- 52*10
@@ -25,32 +25,33 @@ standata <- list(
   gamma=1/3
 )
 
-stanfit_sirs_us_incidence_npi <- sampling(model,
+stanfit_sir_us_incidence_npi <- sampling(model,
 															 data=standata,
-															 seed=104,
+															 seed=101,
 															 chain=4,
 															 cores=4,
-															 iter=4000,
+															 iter=6000,
 															 control=list(
-															 	adapt_delta=0.9
+															 	adapt_delta=0.99,
+															 	max_treedepth=12
 															 ))
 
-check_hmc_diagnostics(stanfit_sirs_us_incidence_npi)
-get_num_divergent(stanfit_sirs_us_incidence_npi)
-get_num_max_treedepth(stanfit_sirs_us_incidence_npi)
-get_low_bfmi_chains(stanfit_sirs_us_incidence_npi)
-get_bfmi(stanfit_sirs_us_incidence_npi)
+check_hmc_diagnostics(stanfit_sir_us_incidence_npi)
+get_num_divergent(stanfit_sir_us_incidence_npi)
+get_num_max_treedepth(stanfit_sir_us_incidence_npi)
+get_low_bfmi_chains(stanfit_sir_us_incidence_npi)
+get_bfmi(stanfit_sir_us_incidence_npi)
 
-save("stanfit_sirs_us_incidence_npi", file="stanfit_sirs_us_incidence_npi.rda")
+save("stanfit_sir_us_incidence_npi", file="stanfit_sir_us_incidence_npi.rda")
 
-ss <- summary(stanfit_sirs_us_incidence_npi)
+ss <- summary(stanfit_sir_us_incidence_npi)
 
-max(ss$summary[which(!is.na(ss$summary[,10])),10]) ## 1.0094
-min(ss$summary[which(!is.na(ss$summary[,10])),9]) ## 552.1858
+max(ss$summary[which(!is.na(ss$summary[,10])),10]) ## 1.005
+min(ss$summary[which(!is.na(ss$summary[,10])),9]) ## 440
 
 plot(1:(N+Npred)/52, ss$summary[grepl("C\\[", rownames(ss$summary)),6], col=2)
 
-plot(c(rep(NA, 12), zoo::rollmean(data_incidence$proxy, 12)), type="l", xlim=c(0, 1000), ylim=c(0, 50))
+plot(c(rep(NA, 12), zoo::rollmean(data_incidence$proxy, 12)), type="l", xlim=c(0, 1000), ylim=c(0, 10))
 lines(ss$summary[grepl("C\\[", rownames(ss$summary)),6], col=2)
 lines(ss$summary[grepl("C\\[", rownames(ss$summary)),4], col=2)
 lines(ss$summary[grepl("C\\[", rownames(ss$summary)),8], col=2)
@@ -68,6 +69,6 @@ plot(ss$summary[grepl("npieff\\[", rownames(ss$summary)),6], type="l", ylim=c(0,
 lines(ss$summary[grepl("npieff\\[", rownames(ss$summary)),4])
 lines(ss$summary[grepl("npieff\\[", rownames(ss$summary)),8])
 
-plot(ss$summary[grepl("S\\[", rownames(ss$summary)),6]/1e3, ylim=c(0, 1))
-lines(ss$summary[grepl("S\\[", rownames(ss$summary)),4]/1e3)
-lines(ss$summary[grepl("S\\[", rownames(ss$summary)),8]/1e3)
+plot(ss$summary[grepl("S\\[", rownames(ss$summary)),6]/1e6, ylim=c(0, 1))
+lines(ss$summary[grepl("S\\[", rownames(ss$summary)),4]/1e6)
+lines(ss$summary[grepl("S\\[", rownames(ss$summary)),8]/1e6)

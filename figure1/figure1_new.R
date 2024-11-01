@@ -7,7 +7,6 @@ library(egg)
 source("../script/script_incidence.R")
 
 load("../stanfit_sirs/stanfit_sirs_us_incidence_npi.rda")
-load("../data/data_processed_mobility_us.rda")
 
 ss <- summary(stanfit_sirs_us_incidence_npi)
 

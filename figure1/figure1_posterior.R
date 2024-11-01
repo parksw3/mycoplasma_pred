@@ -56,7 +56,7 @@ g2 <- ggplot(I0) +
 g3 <- ggplot(rho) +
 	stat_function(fun=function(x) dnorm(x, 0, 2)*2, col="black", lwd=0.7) +
 	geom_density(aes(value), lwd=0.7, col="#E02938") +
-	scale_x_continuous("Scaling parameter", limits=c(0, 4)) +
+	scale_x_continuous("Scaling parameter", limits=c(0, 0.01)) +
 	scale_y_continuous("Probability density", expand=c(0, 0)) +
 	tt
 
