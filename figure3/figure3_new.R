@@ -150,6 +150,10 @@ g1 <- ggplot(scaledata) +
 g2 <- ggplot(scaledata) +
 	geom_vline(xintercept=2015:2025, lty=3) +
 	geom_line(aes(year+week/52, C, col=as.factor(scale)), lwd=0.8) +
+	annotate("segment", x=2024, xend=2024, y=20, yend=18,
+					 arrow = arrow(length=unit(0.30,"cm"), ends="last", type = "closed")) +
+	annotate("text", x=2024, y=24, label="Beginning of\nthe observed\noutbreak",
+					 family="Times") +
 	scale_x_continuous("Year", expand=c(0, 0),
 										 limits=c(2019.5, 2025.5),
 										 breaks=2015:2024) +
@@ -182,6 +186,10 @@ g3 <- ggplot(durdata) +
 g4 <- ggplot(durdata) +
 	geom_vline(xintercept=2015:2025, lty=3) +
 	geom_line(aes(year+week/52, C, col=as.factor(dur)), lwd=0.8) +
+	annotate("segment", x=2024, xend=2024, y=20, yend=18,
+					 arrow = arrow(length=unit(0.30,"cm"), ends="last", type = "closed")) +
+	annotate("text", x=2024, y=24, label="Beginning of\nthe observed\noutbreak",
+					 family="Times") +
 	scale_x_continuous("Year", expand=c(0, 0),
 										 limits=c(2019.5, 2025.5),
 										 breaks=2015:2024) +
@@ -203,6 +211,10 @@ g5 <- ggplot() +
 g6 <- ggplot(immunedata) +
 	geom_vline(xintercept=2015:2025, lty=3) +
 	geom_line(aes(year+week/52, C, col=as.factor(immune)), lwd=0.8) +
+	annotate("segment", x=2024, xend=2024, y=20, yend=18,
+					 arrow = arrow(length=unit(0.30,"cm"), ends="last", type = "closed")) +
+	annotate("text", x=2024, y=24, label="Beginning of\nthe observed\noutbreak",
+					 family="Times") +
 	scale_x_continuous("Year", expand=c(0, 0),
 										 limits=c(2019.5, 2025.5),
 										 breaks=2015:2024) +

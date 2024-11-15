@@ -109,13 +109,14 @@ A long delay in epidemic resurgence is particularly alarming because it can allo
 As Mp infections are beginning to increase rapidly in the US (Figure 1A), predicting the size of an impending outbreak is critical for public health agencies and decision makers.
 % The objective of this study was to predict Mp outbreaks using data from 2015 onward thereby providing critical data for clinical providers and public health agencies. 
 Here, we present a modeling analysis of Mp outbreaks in the US using data from 2015 onward and predictions for potential upcoming outbreaks and subsequent epidemic dynamics.
+We also explore counterfactual scenarios to tease apart factors that contributed to long delays in the resurgence of Mp outbreaks.
 
 \section{Methods}
 
 \subsection{Data}
 
 We analyzed over 2.57 million BIOFIRE\textsuperscript{®} Respiratory (RP1.7, RP2, and RP2.1) Panel (bioMérieux, Salt Lake City, Utah) multiplex PCR test results, 8678 of which had a positive detection of Mp \citep{poritz2011filmarray,leber2018multicenter,creager2020clinical}. 
-These deidentified patient test results were captured from 127 US inpatient and outpatient facilities from January 1, 2015 to June 29, 2024 using BIOFIRE\textsuperscript{®} Syndromic Trends, a cloud-based pathogen surveillance network for BIOFIRE\textsuperscript{®} instruments. Further details regarding the dataset and test result collection and interpretation methods have been previously published \citep{meyers2018automated}.
+These deidentified patient test results were captured from 127 US inpatient and outpatient facilities from January 1, 2015 to June 29, 2024 using BIOFIRE\textsuperscript{®} Syndromic Trends, a cloud-based pathogen surveillance network for BIOFIRE\textsuperscript{®} instruments. Further details regarding the dataset and test result collection and interpretation methods have previously been published \citep{meyers2018automated}.
 We also analyzed time-series data of influenza-like illnesses (ILIs), which were downloaded the FluView website (\url{https://gis.cdc.gov/grasp/fluview/fluportaldashboard.html}), and time-series data of Google Mobility for the US, which were taken from a previous publication \citep{park2024predicting}.
 
 \subsection{Incidence proxy}
@@ -207,11 +208,11 @@ This model was also fitted using the same priors and likelihood function  with 4
 
 \subsection{Evaluating the impact of NPIs and waning immunity on the delays in re-emergence of Mp outbreak}
 
-It is currently unknown what factors contributed to long delays in re-emergence of Mp outbreak.
-To evaluate the potential impact of NPIs and waning immunity on the timing of Mp re-emergence, we explored counterfactual scenarios by performing sensitivity analyses on how the duration of NPIs, strength of NPIs, and duration of immunity can affect the timing of Mp outbreak resurgence; 
-for simplicity, we tested the sensitivity of epidemic dynamics to these variables independently (i.e., by varying one variable at a time) and did not explore their joint effects.
-In doing so, we separately varied the strength and duration of NPIs by modulating the estimated NPI effects $\delta(t)$.
-First, the strength of NPIs were modified by taking fold changes in transmission $\delta-1$ and scaling it by a factor of $\theta$ such that the resulting transmission rate corresponds to
+It is currently unknown what factors contributed to long delays in re-emergence of the Mp outbreak.
+To evaluate the potential impact of NPIs and waning immunity on the timing of Mp re-emergence, we explored counterfactual scenarios by performing sensitivity analyses on how different assumptions about NPI effects and waning immunity can affect the timing of Mp outbreak resurgence; 
+for simplicity, we tested the sensitivity of epidemic dynamics to each assumption independently (i.e., by varying one variable at a time) and did not explore their joint effects.
+% In doing so, we separately varied the strength and duration of NPIs by modulating the estimated NPI effects $\delta(t)$.
+First, the strength of NPIs were modified by taking the estimated fold changes in transmission $\delta-1$ and scaling it by a factor of $\theta$ such that the resulting transmission rate corresponds to
 \begin{equation}
 \beta(t) = \tsub{\beta}{seas}(t) [1+\theta (\delta(t)-1)].
 \end{equation}
@@ -223,6 +224,7 @@ Second, the duration of NPIs were modified by assuming $\delta = 1$ after the en
 \end{cases}.
 \end{equation}
 We varied $\tsub{t}{end}$ between 2020--2024.
+We also tested how the timing of NPI introduction, relative to the timing of multiannual cycles of Mp outbreak, by shifting $\delta(t)$ by 1--3 years to allow earlier introduction of NPIs.
 Finally, we varied the duration of immunity $1/\nu$ between 5--25 years to assess how waning immunity contributes to the timing of Mp outbreak resurgence.
 For illustration purposes, all other parameters are set to median values from the posterior throughout the analysis.
 
@@ -241,20 +243,20 @@ Red lines and shaded regions represent the estimated posterior median and corres
 \end{figure}
 
 \textbf{Mathematical modeling of past Mp epidemics.}
-The model reproduced the observed epidemic dynamics for Mp infections, including the seasonal and longer-term ($\approx 5$ year) epidemic cycles before NPIs were introduced and the delayed resurgence of the epidemic (Figure 1A).
+The model reproduced the observed epidemic dynamics for Mp infections, including the seasonal and longer-term ($\approx 5$ year) epidemic cycles before NPIs were introduced and the subsequent delayed resurgence of the epidemic (Figure 1A).
 To capture the response of Mp to the pandemic, the model required a strong reduction in transmission ($\delta(t) < 1$) in 2020 (Figure 1B).
 The model further estimated sustained reduction in transmission for 2021--2023 (Figure 1C).
 While we did not find a statistical correlation between the estimated changes in transmission and mean changes in Google mobility measures ($r=0.14$; 95\% CI: -0.03, 0.30),
 the strength of correlation increased with lags, with strongest correlation occurring at a 4-week lag  ($r=0.36$; 95\% CI: 0.21--0.50; Supplementary Figure S2).
-The model demonstrated typical sinusoidal patterns in seasonal transmission, peaking around week 43 (Figure 1C).
+The model demonstrated sinusoidal patterns in seasonal transmission---which is typical for respiratory infections---peaking around week 43 (Figure 1C).
 The model also estimated the mean duration of immunity to be 15.1 years (95\% CI: 11.9 years--18.7 years).
 Comparisons between posterior and prior distributions are presented in Supplementary Figure S3. 
 The SIR model gave nearly identical estimates for the NPI effects and transmission rates but underestimated the peak of the 2015 outbreak, providing support for the SIRS model (Supplementary Figure S4).
 
 \textbf{Prediction of future Mp outbreaks.}
 In line with other acute, partially immunizing respiratory pathogens \citep{baker2020impact}, the model predicted a large build-up of the susceptible pool during the NPI period (Figure 2A).
-This build up of susceptible individuals could lead to a large Mp outbreak, which appears to have begun since the beginning of 2024 (Figure 1A);
-the model forecasted that the epidemic would peak around the second half of 2024 and start to decline towards the end of 2024 (Figure 2B), reflecting decrease in transmission rate in winter (Figure 1C).
+This increase in susceptible individuals could lead to a large Mp outbreak, which appears to have begun since the beginning of 2024 (Figure 1A);
+the model forecasted that the epidemic would peak around the second half of 2024 and start to decline towards the end of 2024 (Figure 2B), reflecting a decrease in transmission rate in winter (Figure 1C).
 The peak incidence during this outbreak is estimated to be 4.9 (95\% CI: 4.0--6.0) times larger than previous peaks.
 The model further predicted that the outbreak beginning in 2024 would cause a large depletion of the susceptible pool (Figure 2A), which would lead to another delayed outbreak after several years (Figure 2B).
 
@@ -269,14 +271,17 @@ Points represent the observed incidence proxy.
 }
 \end{figure}
 
-\textbf{Impact of NPIs and waning immunity on the timing of Mp outbreak resurgence.}
+\textbf{Impact of NPI pattern and waning immunity on the timing of Mp outbreak resurgence.}
 The model predicted that a strong reduction in transmission due to NPIs is critical to explaining long delays in the Mp outbreak resurgence.
 A smaller reduction in transmission (Figure 3A) would have led to more persistent epidemics as well as earlier resurgence of Mp outbreaks (Figure 3B).
 Interestingly, the model still predicted a large outbreak in 2023 even when we assumed that NPI effects were 50--75\% weaker than what we originally estimated, demonstrating the risk of a susceptible build up.
 Similarly, assuming shorter duration of NPIs (Figure 3C) led to earlier resurgence (Figure 3D).
 However, even if transmission rates were to return to pre-pandemic values by the end of 2020, the model predicted that the resurgence would not be observed until the middle of 2022 (Figure 3D).
-Finally, we found that the duration of immunity was also a key factor in determining the delays in Mp outbreak resurgences.
-Faster waning of immunity would have caused a faster build up of the susceptible pool, leading to an earlier Mp outbreak.
+We also find that the timing of NPIs, relative to the timing of relative to the timing of multiannual cycles of Mp outbreak, can affect the timing of resurgence (Supplementary Figure S5).
+Specifically, when NPIs are introduced after a major outbreak, a large susceptible depletion caused by the major outbreak can drive a longer delay until the resurgence.
+Instead, if NPIs were introduced 1 or 2 years earlier (thus before the major outbreak that occurred in the winter of 2019), the duration of honeymoon period would have been shorter.
+Finally, we found that the duration of immunity was also a key factor in determining the delays in Mp outbreak resurgences (Figure 3E):
+faster waning of immunity would have caused a faster build up of the susceptible pool, leading to an earlier Mp outbreak.
 
 \begin{figure}[!th]
 \includegraphics[width=\textwidth]{../figure3/figure3_new.pdf}
@@ -285,6 +290,7 @@ Faster waning of immunity would have caused a faster build up of the susceptible
 (A, C) Assumed values for the relative transmission term $\delta$ following the introduction of NPIs by varying the strength (A) and duration (C) of NPIs.
 (B, D) Resulting epidemic dynamics across different assumptions about NPIs.
 (E) Resulting epidemic dynamics across different assumptions about the duration of immunity.
+The arrows indicate the beginning of the observed outbreak as a reference.
 }
 \end{figure}
 
@@ -293,16 +299,17 @@ Faster waning of immunity would have caused a faster build up of the susceptible
 In this study, we investigated the impact of NPIs on future Mp outbreaks in the US.
 By fitting a mathematical model to syndromic surveillance data, we predicted that a large Mp outbreak is imminent with a peak expected before the end of 2024.
 The upcoming outbreak is expected to be much larger than past outbreaks and may last until the end of 2025; note, however, that there is currently substantial uncertainty associated with longer-term dynamics, including the duration of 2024--2025 outbreak and the timing of the subsequent outbreaks.
-We can already observe what seems to be the beginning of this outbreak with an increasing rate of Mp detections throughout May and June 2024. 
-Nonetheless, this prediction should alert clinicians and health care systems to be prepared for an increase in cases of pneumonia and potentially more rare presentations of Mp, such as reactive infectious mucocutaneous eruption (RIME) and encephalitis.
+By the beginning of 2024, we could already observe what seems to be the beginning of this outbreak with an increasing rate of Mp detections throughout May and June 2024. 
+This prediction should alert clinicians and health care systems to be prepared for an increase in cases of pneumonia and potentially more rare presentations of Mp, such as reactive infectious mucocutaneous eruption (RIME) and encephalitis.
 
-Our analysis highlighted the importance of strong reduction in transmission in explaining the delayed resurgence of Mp outbreaks.
-Specifically, we estimated $\approx 50\%$ reduction in transmission in 2020, which is considerably larger than reduction in transmission estimated for other respiratory pathogens.
+Our analysis highlighted the importance of a strong reduction in transmission in explaining the delayed resurgence of Mp outbreaks.
+Specifically, we estimated $\approx 50\%$ reduction in transmission in 2020, which is considerably larger than the reduction in transmission estimated for other respiratory pathogens.
 For example, \cite{baker2020impact} estimated a 20\% reduction in RSV transmission in the beginning of 2020.
 Future studies should explore whether the epidemiology and life history of Mp infections cause its transmission to be more susceptible to behavioral changes.
+Our analyses also suggest that the duration of NPIs, relative timing of NPIs, and the duration of immunity against MP infections also contributed to the long delays in resurgence.
 
 There are several limitations to our study.
-The dataset inherently contains a subset of the US population that has presented to a facility that utilizes the BIOFIRE\textsuperscript{®} Respiratory Panel and participates in the BIOFIRE\textsuperscript{®} Syndromic Trends network. As with many surveillance network data, this assumes inherent selection bias for less healthy individuals than the general population, therefore introducing the limitation of representativeness of the dataset. Additionally, due to the nature of deidentified data collection within the dataset, we are not able to conduct analyses based on patient or facility characteristics or account for variability in diagnostic testing algorithms between facilities. However, this dataset has evidenced correlation with other surveillance sources, reducing concern regarding representativeness and generalizability \citep{meyers2018automated}. 
+The dataset inherently contains a subset of the US population that has presented to facilities that utilizes the BIOFIRE\textsuperscript{®} Respiratory Panel and participates in the BIOFIRE\textsuperscript{®} Syndromic Trends network. As with many surveillance network data, this assumes inherent selection bias for less healthy individuals than the general population, therefore introducing the limitation of representativeness of the dataset. Additionally, due to the nature of deidentified data collection within the dataset, we are not able to conduct analyses based on patient or facility characteristics or account for variability in diagnostic testing algorithms between facilities. However, this dataset has evidenced correlation with other surveillance sources, reducing concern regarding representativeness and generalizability \citep{meyers2018automated}. 
 
 We did not account for heterogeneity in Mp dynamics across states as the quantity of data did not allow for reliable model-fitting at a regional scale.
 We did not include age structure in the model as it would require more data.
@@ -315,7 +322,7 @@ So far, there have been limited modeling studies analyzing epidemic dynamics of 
 Our study reinforces recent work on the importance of understanding susceptible dynamics to predict the impact of perturbations to transmission \citep{baker2020impact,park2024predicting}.
 % Preparing for the imminent Mp outbreak will be vital for hospitals and public health agencies in the US. 
 As such, our analysis underlines the importance of serological surveillance data to capture the build up of the susceptible pool to foresee future outbreaks \citep{mina2020global,nguyen2022enterovirus}.
-Our study also underlines the potential of BIOFIRE\textsuperscript{®} Syndromic Trends network as a powerful surveillance measure.
+Our study also underlines the potential of BIOFIRE\textsuperscript{®} Syndromic Trends network as a powerful surveillance measure \citep{park2021epidemiological}.
 
 \section*{Data availability}
 
@@ -378,7 +385,6 @@ Note that the prior distribution for the scaling parameter is not visible in pan
 }
 \end{figure}
 
-
 \pagebreak
 
 \begin{figure}[!ht]
@@ -395,6 +401,21 @@ Lines and shaded regions represent the estimated posterior median and correspond
 \end{figure}
 
 \pagebreak
+
+\begin{figure}[!ht]
+\includegraphics[width=\textwidth]{../figure3/figure3_cyclic.pdf}
+\caption{
+\textbf{Impact of timing of NPI introduction, relative to the timing of the multiannaul cycles of Mp outbreaks.}
+Sensitivity analyses were performed by shifting the estimated $\delta$ by 1--3 years to explore counterfactual scenarios that allow earlier introduction of NPIs.
+The first panel (inferred NPI effects) represent our main predictions (shown in Figure 2 in the main text) following the observed epidemic.
+All other panels represent counterfactual simulations.
+Black lines represent the predicted incidence proxy.
+Red lines represent the predicted susceptible proportion.
+}
+\end{figure}
+
+\pagebreak
+
 
 \bibliography{myco}
 
